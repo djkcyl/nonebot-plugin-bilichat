@@ -37,12 +37,10 @@ jobs:
           run: Set-Content -Path ".\start.bat" -Value "@echo off`nset PLAYWRIGHT_BROWSERS_PATH=browser`n.runtime\python bot.py`npause"
 
         - name: zip project
-          run: Compress-Archive -Path . -DestinationPath dist.zip
+          run: Compress-Archive -Path . -DestinationPath bilichat-bot-windows-with-env.zip
 
         - name: upload release asset
-          uses: actions/upload-release-asset@v1
+          uses: softprops/action-gh-release@v2
+          if: startsWith(github.ref, 'refs/tags/')
           with:
-            upload_url: ${{ github.event.release.upload_url }}
-            asset_path: dist.zip
-            asset_name: bilichat-bot-windows-with-env-$GITHUB_REF.zip
-            asset_content_type: application/zip
+            files: bilichat-bot-windows-with-env.zip
