@@ -20,20 +20,18 @@ jobs:
           with:
             environment-name: env
             create-args: >-
-                -r
-                ./env
                 python=3.10
 
         - name: install dependencies
           env:
             PLAYWRIGHT_BROWSERS_PATH: browser
           run: |
-            .\env\envs\env\python.exe -m pip install -e .[all,dev]
-            .\env\envs\env\python.exe -m pip install nonebot-adapter-onebot nonebot-adapter-satori
-            .\env\envs\env\python.exe -m playwright install chromium
+            C:\Users\runneradmin\micromamba\envs\env\python.exe -m pip install -e .[all,dev]
+            C:\Users\runneradmin\micromamba\envs\env\python.exe -m pip install nonebot-adapter-onebot nonebot-adapter-satori
+            C:\Users\runneradmin\micromamba\envs\env\python.exe -m playwright install chromium
 
         - name: copy env dir
-          run: cp -r env/envs/env .runtime
+          run: cp -r C:\Users\runneradmin\micromamba\envs\env .runtime
 
         - name: delete env dir
           run: rm -r env
