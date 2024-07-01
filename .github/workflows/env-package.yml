@@ -20,7 +20,8 @@ jobs:
           with:
             environment-name: env
             create-args: >-
-                -r ./env
+                -r
+                ./env
                 python=3.10
 
         - name: install dependencies
