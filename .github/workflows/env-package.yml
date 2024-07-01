@@ -33,9 +33,6 @@ jobs:
         - name: copy env dir
           run: cp -r C:\Users\runneradmin\micromamba\envs\env .runtime
 
-        - name: delete env dir
-          run: rm -r env
-
         - name: create start script
           run: Set-Content -Path ".\start.bat" -Value "@echo off`nset PLAYWRIGHT_BROWSERS_PATH=browser`n.runtime\python bot.py`npause"
 
