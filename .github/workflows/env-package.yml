@@ -1,0 +1,52 @@
+name: Python Env Package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+    contents: read
+
+
+jobs:
+    deploy:
+        runs-on: windows-latest
+
+        steps:
+        - uses: actions/checkout@v3
+
+        - name: micromamba create
+          uses: mamba-org/setup-micromamba@v1
+          with:
+            environment-name: env
+            create-args: >-
+                -r ./env
+                python=3.10
+
+        - name: install dependencies
+          env:
+            PLAYWRIGHT_BROWSERS_PATH: browser
+          run: |
+            .\env\envs\env\python.exe -m pip install -e .[all,dev]
+            .\env\envs\env\python.exe -m pip install nonebot-adapter-onebot nonebot-adapter-satori
+            .\env\envs\env\python.exe -m playwright install chromium
+
+        - name: copy env dir
+          run: cp -r env/envs/env .runtime
+
+        - name: delete env dir
+          run: rm -r env
+
+        - name: create start script
+          run: Set-Content -Path ".\start.bat" -Value "@echo off`nset PLAYWRIGHT_BROWSERS_PATH=browser`n.runtime\python bot.py`npause"
+
+        - name: zip project
+          run: Compress-Archive -Path . -DestinationPath dist.zip
+
+        - name: upload release asset
+          uses: actions/upload-release-asset@v1
+          with:
+            upload_url: ${{ github.event.release.upload_url }}
+            asset_path: dist.zip
+            asset_name: bilichat-bot-windows-with-env-$GITHUB_REF.zip
+            asset_content_type: application/zip

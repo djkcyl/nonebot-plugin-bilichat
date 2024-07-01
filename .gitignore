@@ -18,3 +18,7 @@ qrcode.png
 cookies.json
 
 nonebot2-local-store.lnk
+/.runtime
+/browser
+/dist.zip
+/start.bat
